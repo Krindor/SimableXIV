@@ -44,6 +44,7 @@ class GeneralFunctions extends FuncInterface {
     hashMap.put("Start", attackStart)
     hashMap.put("End", attackEnd)
     hashMap.put("DamageOverTime", damageOverTime)
+    hashMap.put("Opener", runOpener)
     hashMap
   }
 

@@ -1,5 +1,7 @@
+package Core
+
 import BaseClasses.JobInfo
-import models.{OpenerModel, SimModel, StatModel}
+import models.SimModel
 import timers.NextAttack
 
 /*
@@ -7,15 +9,14 @@ import timers.NextAttack
  */
 class SimCore(val jobInfo: JobInfo) {
 
-  private val time: Double = jobInfo.time
+
   private var currentTime: Double = 0
   private val nextAttack:NextAttack = new NextAttack
   private var simModel: SimModel = jobInfo.simModel
 
   nextAttack.addFunction(simModel.attackTypeMap("Opener") , "Test", 1)
+
   //Runs the sim
-
-
   def nextAction(damageLog: Array[String]): Array[String] = {
 
 

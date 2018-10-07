@@ -13,7 +13,7 @@ plugins {
 
 dependencies {
     // Use Scala 2.11 in our library project
-    compile 'org.scala-lang:scala-library:2.11.12'
+    compile 'org.scala-lang:scala-library:2.12.7'
 
     // Use Scalatest for testing our library
     testCompile 'junit:junit:4.12'
