@@ -1,5 +1,5 @@
 package models
 
-class OpenerModel {
+class OpenerModel(val skillName: String, val skillType: String, val delayOffset: Double) {
 
 }

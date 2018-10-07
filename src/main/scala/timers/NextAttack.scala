@@ -8,7 +8,7 @@ class NextAttack {
   private var timerMap: MutHashMap[String, Double] = new MutHashMap[String, Double]
 
 
-  def updateValue(change:Double) = {
+  def updateValue(change:Double):Unit = {
     timerMap = timerMap.transform((k ,v) => v - change)
   }
 
