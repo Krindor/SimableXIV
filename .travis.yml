@@ -1,0 +1,3 @@
+language: scala
+rvm:
+  - 2.12.7
