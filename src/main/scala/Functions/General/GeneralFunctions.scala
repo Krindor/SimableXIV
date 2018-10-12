@@ -6,29 +6,29 @@ import models.{OpenerModel, SimModel}
 import scala.collection.mutable.{HashMap => mutHashMap}
 
 class GeneralFunctions extends FuncInterface {
-  def attackStart(oldSimModel: SimModel): SimModel ={
+  def attackStart(oldSimModel: SimModel): Unit ={
     var simModel:SimModel = oldSimModel
     simModel
   }
 
-  def damageOverTime(oldSimModel: SimModel): SimModel ={
+  def damageOverTime(oldSimModel: SimModel): Unit ={
     var simModel:SimModel = oldSimModel
     simModel
   }
 
-  def attackEnd(oldSimModel: SimModel): SimModel ={
+  def attackEnd(oldSimModel: SimModel): Unit ={
     var simModel:SimModel = oldSimModel
     simModel
   }
 
-  def runOpener(oldSimModel: SimModel): SimModel = {
+  def runOpener(simModel: SimModel): Unit = {
     //removes the first element in the queue containing the opener order
-    var simModel:SimModel = oldSimModel
+
 
     val openerModel: OpenerModel = simModel.openerQueue.dequeue()
 
     val attack = simModel.attackMap(openerModel.skillName)
-    simModel = attack.runAttack(simModel)
+    attack.runAttack(simModel)
     //removes the opener and adds more specific types to handle the rotation
     if (simModel.openerQueue.isEmpty) {
       simModel.nextAttack.removeFunction("Opener")
@@ -36,11 +36,16 @@ class GeneralFunctions extends FuncInterface {
         simModel.nextAttack.addFunction(i._2, i._1)
       }
     }
-    simModel
+
   }
 
-  def getFunctions: mutHashMap[String, SimModel => SimModel] ={
-    val hashMap: mutHashMap[String, SimModel => SimModel] = new mutHashMap[String, SimModel => SimModel]
+  def changeTime(oldSimModel:SimModel): Unit ={
+    oldSimModel.updateTime(oldSimModel.timeChange)
+
+  }
+
+  def getFunctions: mutHashMap[String, SimModel => Unit] ={
+    val hashMap: mutHashMap[String, SimModel => Unit] = new mutHashMap[String, SimModel => Unit]
     hashMap.put("Start", attackStart)
     hashMap.put("End", attackEnd)
     hashMap.put("DamageOverTime", damageOverTime)
@@ -49,7 +54,7 @@ class GeneralFunctions extends FuncInterface {
   }
 
   def applyCritDamage(simModel: SimModel): (Double, Double)={
-    val critResult: (Double, Double) = simModel.formulaMap("Crit")(simModel)
+    val critResult: (Double, Double) = simModel.formulaMap("Crit")(simModel, 0)
 
     critResult._2 match {
       case 0 => (1, critResult._2)

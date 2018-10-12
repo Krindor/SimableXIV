@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 class RandomFormula extends FormulaInterface{
 
-  def getFormulas: mutable.HashMap[String, SimModel => (Double, Double)] = {
-    new mutable.HashMap[String, SimModel => (Double, Double)]
+  def getFormulas: mutable.HashMap[String, (SimModel,Double) => (Double, Double)] = {
+    new mutable.HashMap[String, (SimModel,Double) => (Double, Double)]
   }
 }

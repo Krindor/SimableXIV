@@ -4,7 +4,7 @@ import models.SimModel
 import scala.collection.mutable.{HashMap => MutHashMap}
 
 class NextAttack {
-  private var actionMap: MutHashMap[String, SimModel => SimModel] = new MutHashMap[String, SimModel => SimModel]
+  private var actionMap: MutHashMap[String, SimModel => Unit] = new MutHashMap[String, SimModel => Unit]
   private var timerMap: MutHashMap[String, Double] = new MutHashMap[String, Double]
 
 
@@ -12,12 +12,12 @@ class NextAttack {
     timerMap = timerMap.transform((k ,v) => v - change)
   }
 
-  def addFunction(attackFunction: SimModel => SimModel, name: String, startValue: Double = 0): Unit ={
+  def addFunction(attackFunction: SimModel => Unit, name: String, startValue: Double = 0): Unit ={
     actionMap.update(name, attackFunction)
     timerMap.update(name, startValue)
   }
 //Checks for the next attack type and returns the function and the time until next attack
-  def getNextAttack:(SimModel => SimModel, Double) = {
+  def getNextAttack:(SimModel => Unit, Double) = {
     val changeValue =  timerMap.valuesIterator.min
     val returningValue = actionMap(timerMap.find(_._2  == changeValue).get._1)
     updateValue(changeValue)

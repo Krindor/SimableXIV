@@ -3,7 +3,8 @@ package models
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-class SkillModel(val skillName: String, val skillType: String, val  checkArray: ArrayBuffer[(SimModel, mutable.Queue[String]) => SimModel], val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val successPotency: Int = 1, val failPotency: Int = 0) {
+class SkillModel(val skillName: String, val skillType: String, val  checkArray: ArrayBuffer[(SimModel, mutable.Queue[String]) => Unit],
+                 val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val successPotency: Int = 1, val failPotency: Int = 0, val baseRecast: Double = 2.5, val delayOffset: Double = 0) {
   //Creates a List(touple2) to be iterated later
   private val pairing = checkArray zip queueForCheckArray
 
@@ -15,15 +16,15 @@ class SkillModel(val skillName: String, val skillType: String, val  checkArray: 
   what buff to check for and then what the resulting function will be and in that resulting function if there exists
   another function/buff or other effect that needs to be selected. It then updates and returns the SimModel
    */
-  def runAttack(oldSimModel: SimModel): SimModel ={
-    var simModel = oldSimModel
+  def runAttack(oldSimModel: SimModel): Unit ={
+
 
     for ((check, queue) <- pairing){
 
-      simModel = check(simModel, queue)
+      check(oldSimModel, queue)
       print(" ran check")
     }
 
-    simModel
+
   }
 }

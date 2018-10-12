@@ -9,6 +9,9 @@ import scala.collection.mutable.{ArrayBuffer, HashMap => MutMap}
 
 object MainTest {
   def main(args: Array[String]): Unit = {
+
+
+
     val averageFormula: AverageFormula = new AverageFormula
     val generalFormulas: GeneralFormulas = new GeneralFormulas
     val generalAttackFunctions: GeneralAttackFunctions = new GeneralAttackFunctions
@@ -19,7 +22,8 @@ object MainTest {
 
 
     val formulaMap = averageFormula.getFormulas
-    formulaMap ++ generalFormulas.getFormulas
+    formulaMap ++= generalFormulas.getFormulas
+
 
     val funcMap = generalFunctions.getFunctions
 
@@ -27,7 +31,7 @@ object MainTest {
 
     val attackTypeMap = funcMap
 
-    var checkArray = new ArrayBuffer[(SimModel, mutable.Queue[String]) => SimModel](4)
+    var checkArray = new ArrayBuffer[(SimModel, mutable.Queue[String]) => Unit](4)
     checkArray += attackFunctionsMap("State Check")
     var queueForCheckArray = new ArrayBuffer[mutable.Queue[String]](4)
     var queueForCheck = new mutable.Queue[String]()
@@ -60,5 +64,13 @@ object MainTest {
 
     simCore.nextAction(new Array[String](150))
   }
+
+  def amIDumb(buffModel: BuffModel): Unit ={
+    buffModel.time = 1
+
+
+
+  }
+
 
 }
