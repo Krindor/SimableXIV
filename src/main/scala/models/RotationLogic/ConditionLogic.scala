@@ -19,12 +19,12 @@ class ConditionLogic(array: Array[String]){
     //The loop and match will only be performed once when I clean the code up
     for (comparerChar <- comparer) {
     comparerChar.toString match {
-      case ">" => if (value > comparingValue) return true else boolean = false
-      case "=" => if (value.equals(comparingValue)) return true else boolean = false
-      case "<" => if (value < comparingValue) return true else boolean = false
+      case ">" => if (value > comparingValue) true else boolean = false
+      case "=" => if (value.equals(comparingValue)) true else boolean = false
+      case "<" => if (value < comparingValue) true else boolean = false
       case "exist" =>
-        if (comparingValue == 0 && value == 0) return true
-        else if (comparingValue == 1 && value >= 1) return true
+        if (comparingValue == 0 && value == 0) true
+        else if (comparingValue == 1 && value >= 1) true
         else boolean = false
     }
   }

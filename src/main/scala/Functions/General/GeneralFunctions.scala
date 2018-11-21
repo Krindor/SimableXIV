@@ -6,21 +6,36 @@ import models.{OpenerModel, SimModel}
 import scala.collection.mutable.{HashMap => mutHashMap}
 
 class GeneralFunctions extends FuncInterface {
-  def attackStart(SimModel: SimModel): Unit ={
-
+  //Initiates and attack
+  def attackStart(simModel: SimModel): Unit ={
+    simModel.nextAttack.addFunction(simModel.generalFunctionMap("End"), "End", simModel.attackMap(simModel.actionName).castTime)
+    simModel.nextAttack.removeFunction("Start")
+  }
+  //When the cast/attack actually finishes
+  def attackEnd(simModel: SimModel): Unit ={
+    simModel.nextAttack.addFunction(simModel.generalFunctionMap("ApplyAttack"), "ApplyAttack",simModel.attackMap(simModel.actionName).applicationOffset)
+    simModel.snapShotBuffMap = simModel.buffMap
+    simModel.nextAttack.removeFunction("End")
+    simModel.generalFunctionMap("TimeChange")(simModel)
   }
 
-  def damageOverTime(SimModel: SimModel): Unit ={
-
-  }
-
-  def attackEnd(SimModel: SimModel): Unit ={
-
+  def damageOverTime(simModel: SimModel): Unit ={
+    for (dot <- simModel.buffMap("DamageOverTime")){
+      //deal damage
+    }
   }
 
   def actionPicker(simModel: SimModel): Unit ={
     //runs the check and returns the name of the action, or none if it didn't find any that matches the current state
     simModel.actionName = simModel.rotationLogic.check(simModel)._2
+
+  }
+  //When the buffs actually apply(Fuck Square) will also calculate the damage here
+  def applyAttack(simModel: SimModel): Unit ={
+
+    simModel.attackMap(simModel.actionName).runAttack(simModel)
+    simModel.nextAttack.removeFunction("ApplyAttack")
+
 
   }
 
@@ -35,7 +50,7 @@ class GeneralFunctions extends FuncInterface {
     //removes the opener and adds more specific types to handle the rotation
     if (simModel.openerQueue.isEmpty) {
       simModel.nextAttack.removeFunction("Opener")
-      for (i <- simModel.attackTypeMap) {
+      for (i <- simModel.generalFunctionMap) {
         simModel.nextAttack.addFunction(i._2, i._1)
       }
     }
@@ -54,9 +69,10 @@ class GeneralFunctions extends FuncInterface {
     hashMap.put("DamageOverTime", damageOverTime)
     hashMap.put("Opener", runOpener)
     hashMap.put("ActionPicker", actionPicker)
+    hashMap.put("ApplyAttack", applyAttack)
     hashMap
   }
-
+//I don't even know why this is here
   def applyCritDamage(simModel: SimModel): (Double, Double)={
     val critResult: (Double, Double) = simModel.formulaMap("Crit")(simModel, 0)
 

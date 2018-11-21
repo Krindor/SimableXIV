@@ -1,7 +1,7 @@
 package Functions.General
 
 import Interfaces.AttackFuncInterface
-import models.SimModel
+import models.{BuffModel, SimModel}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, Queue => MutQueue}
@@ -59,10 +59,20 @@ class GeneralAttackFunctions extends AttackFuncInterface{
   Queue(0) = general buff type
   Queue(1) = target buff name
    */
-  def addBuff(SimModel: SimModel, mutQueue: MutQueue[String]): Unit ={
+  def addBuff(simModel: SimModel, mutQueue: MutQueue[String]): Unit ={
     val oldMutQueue = mutQueue
-    SimModel.buffMap(oldMutQueue.dequeue()).put(oldMutQueue.head, SimModel.buffModelMap(oldMutQueue.dequeue()))
+    simModel.buffMap(oldMutQueue.dequeue()).put(oldMutQueue.head, simModel.buffModelMap(oldMutQueue.dequeue()))
 
+  }
+  /*
+  Queue(0) = DoT Name
+   */
+  def addDoT(simModel: SimModel, mutQueue: MutQueue[String]): Unit = {
+    val oldMutQueue = mutQueue
+    val dotName = oldMutQueue.dequeue()
+    val buffModel: BuffModel = simModel.buffModelMap(dotName)
+    buffModel.buffMap = simModel.buffMap
+    simModel.buffMap("DamageOverTime").put(oldMutQueue.head, simModel.buffModelMap(dotName))
   }
 
   def removeBuff(oldSimModel: SimModel, mutQueue: MutQueue[String]): Unit ={

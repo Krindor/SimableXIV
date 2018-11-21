@@ -19,7 +19,7 @@ class SimCore(val jobInfo: JobInfo) {
   simModel.FormulaResult.put("Damage" ,simModel.formulaMap("Damage")(simModel, 0)._1)
   simModel.FormulaResult.put("Crit", simModel.formulaMap("Crit")(simModel, 0)._1)
   simModel.FormulaResult.put("Direct Hit", simModel.formulaMap("Direct Hit")(simModel, 0)._1)
-  nextAttack.addFunction(simModel.attackTypeMap("Opener") , "Test", 1)
+  nextAttack.addFunction(simModel.generalFunctionMap("Opener") , "Test", 1)
 
   //Runs the sim
   def nextAction(damageLog: Array[String]): Array[String] = {

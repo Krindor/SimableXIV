@@ -4,7 +4,9 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 class SkillModel(val skillName: String, val skillType: String, val  checkArray: ArrayBuffer[(SimModel, mutable.Queue[String]) => Unit],
-                 val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val successPotency: Int = 1, val failPotency: Int = 0, val baseRecast: Double = 2.5, val delayOffset: Double = 0) {
+                 val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val successPotency: Int = 1, val failPotency: Int = 0, val baseRecast: Double = 2.5, val castTime: Double = 0,
+                 val applicationOffset: Double = 0
+                ) {
   //Creates a List(touple2) to be iterated later
   private val pairing = checkArray zip queueForCheckArray
 

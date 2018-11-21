@@ -8,10 +8,12 @@ class NextAttack {
   private var timerMap: MutHashMap[String, Double] = new MutHashMap[String, Double]
 
 
+
+//Updates the time value for all values
   def updateValue(change:Double):Unit = {
     timerMap = timerMap.transform((_ ,v) => v - change)
   }
-
+//Adds both the time and the connected function into separate maps
   def addFunction(attackFunction: SimModel => Unit, name: String, startValue: Double = 0): Unit ={
     actionMap.update(name, attackFunction)
     timerMap.update(name, startValue)
