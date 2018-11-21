@@ -12,13 +12,13 @@ class SimCore(val jobInfo: JobInfo) {
 
   private var currentTime: Double = 0
   private val nextAttack:NextAttack = new NextAttack
-  private var simModel: SimModel = jobInfo.simModel
+  private val simModel: SimModel = jobInfo.simModel
 
-  simModel.speedFormulaResult.put("Skill Speed", simModel.formulaMap("Skill Speed")(simModel, 0)._1)
-  simModel.speedFormulaResult.put("Spell Speed", simModel.formulaMap("Spell Speed")(simModel, 0)._1)
-  simModel.damageFormulaResult = simModel.formulaMap("Damage")(simModel, 0)._1
-  simModel.critResult = simModel.formulaMap("Crit")(simModel, 0)._1
-  simModel.dhFormulaResult = simModel.formulaMap("Direct Hit")(simModel, 0)._1
+  simModel.FormulaResult.put("Skill Speed", simModel.formulaMap("Skill Speed")(simModel, 0)._1)
+  simModel.FormulaResult.put("Spell Speed", simModel.formulaMap("Spell Speed")(simModel, 0)._1)
+  simModel.FormulaResult.put("Damage" ,simModel.formulaMap("Damage")(simModel, 0)._1)
+  simModel.FormulaResult.put("Crit", simModel.formulaMap("Crit")(simModel, 0)._1)
+  simModel.FormulaResult.put("Direct Hit", simModel.formulaMap("Direct Hit")(simModel, 0)._1)
   nextAttack.addFunction(simModel.attackTypeMap("Opener") , "Test", 1)
 
   //Runs the sim

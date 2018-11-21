@@ -4,12 +4,12 @@ import models.SimModel
 import scala.collection.mutable.{HashMap => MutHashMap}
 
 class NextAttack {
-  private var actionMap: MutHashMap[String, SimModel => Unit] = new MutHashMap[String, SimModel => Unit]
+  private val actionMap: MutHashMap[String, SimModel => Unit] = new MutHashMap[String, SimModel => Unit]
   private var timerMap: MutHashMap[String, Double] = new MutHashMap[String, Double]
 
 
   def updateValue(change:Double):Unit = {
-    timerMap = timerMap.transform((k ,v) => v - change)
+    timerMap = timerMap.transform((_ ,v) => v - change)
   }
 
   def addFunction(attackFunction: SimModel => Unit, name: String, startValue: Double = 0): Unit ={

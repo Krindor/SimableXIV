@@ -6,19 +6,22 @@ import models.{OpenerModel, SimModel}
 import scala.collection.mutable.{HashMap => mutHashMap}
 
 class GeneralFunctions extends FuncInterface {
-  def attackStart(oldSimModel: SimModel): Unit ={
-    var simModel:SimModel = oldSimModel
-    simModel
+  def attackStart(SimModel: SimModel): Unit ={
+
   }
 
-  def damageOverTime(oldSimModel: SimModel): Unit ={
-    var simModel:SimModel = oldSimModel
-    simModel
+  def damageOverTime(SimModel: SimModel): Unit ={
+
   }
 
-  def attackEnd(oldSimModel: SimModel): Unit ={
-    var simModel:SimModel = oldSimModel
-    simModel
+  def attackEnd(SimModel: SimModel): Unit ={
+
+  }
+
+  def actionPicker(simModel: SimModel): Unit ={
+    //runs the check and returns the name of the action, or none if it didn't find any that matches the current state
+    simModel.actionName = simModel.rotationLogic.check(simModel)._2
+
   }
 
   def runOpener(simModel: SimModel): Unit = {
@@ -39,8 +42,8 @@ class GeneralFunctions extends FuncInterface {
 
   }
 
-  def changeTime(oldSimModel:SimModel): Unit ={
-    oldSimModel.updateTime(oldSimModel.timeChange)
+  def changeTime(simModel:SimModel): Unit ={
+    simModel.updateTime(simModel.timeChange)
 
   }
 
@@ -50,6 +53,7 @@ class GeneralFunctions extends FuncInterface {
     hashMap.put("End", attackEnd)
     hashMap.put("DamageOverTime", damageOverTime)
     hashMap.put("Opener", runOpener)
+    hashMap.put("ActionPicker", actionPicker)
     hashMap
   }
 

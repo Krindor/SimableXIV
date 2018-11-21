@@ -6,7 +6,7 @@ import timers.NextAttack
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap => MutMap}
-
+/*
 object MainTest {
   def main(args: Array[String]): Unit = {
 
@@ -50,17 +50,17 @@ object MainTest {
     val openerQueue: mutable.Queue[OpenerModel] = new mutable.Queue[OpenerModel]()
     openerQueue += openerTester
 
-    var testMap = new MutMap[String, MutMap[String, BuffModel]]()
+    val testMap = new MutMap[String, MutMap[String, BuffModel]]()
     val testMap2 = new MutMap[String, BuffModel]
     testMap2.put("Not Here", new BuffModel)
     testMap.put("test", testMap2)
 
-    var jobInfo: JobInfo = new JobInfo(new StatModel(), "Test", 10)
+    val jobInfo: JobInfo = new JobInfo(new StatModel(), "Test", 10)
     jobInfo.createSimModel(openerQueue, new NextAttack, attackTypeMap, formulaMap, jobInfo.statModel, attackMap, attackFunctionsMap, buffMap)
-    jobInfo.simModel.soloBuffs.put("test", testMap)
+    jobInfo.simModel.buffMap("Solo").put("test", testMap)
     jobInfo.simModel.soloBuffs.put("State", testMap)
 
-    var simCore: SimCore = new SimCore(jobInfo)
+    val simCore: SimCore = new SimCore(jobInfo)
 
     simCore.nextAction(new Array[String](150))
   }
@@ -74,3 +74,4 @@ object MainTest {
 
 
 }
+*/
