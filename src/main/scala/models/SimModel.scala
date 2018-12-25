@@ -3,7 +3,7 @@ import models.RotationLogic.StateCheck
 import timers.NextAttack
 
 import scala.collection.mutable
-import scala.collection.mutable.{HashMap => MutMap, Queue => MutQueue}
+import scala.collection.mutable.{HashMap => MutMap, Queue => MutQueue, ArrayBuffer => MutArray}
 //Contains variables handled in the core to ease passing them
 class SimModel(var openerQueue: MutQueue[OpenerModel], var nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimModel => Unit], val formulaMap: MutMap[String, (SimModel, Double )=> (Double, Double)], var statModel: StatModel,
                val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimModel, mutable.Queue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
@@ -14,9 +14,11 @@ class SimModel(var openerQueue: MutQueue[OpenerModel], var nextAttack: NextAttac
   var timeChange: Double = 0
   var actionName: String = ""
   var snapShotBuffMap: MutMap[String, MutMap[String, BuffModel]] = new MutMap[String, MutMap[String,BuffModel]]()
+  val eventLog: MutArray[String] = new MutArray[String]()
+  var time: Double = 0
   /*First Key is general type, like affects all, affects physical, affects a specific skill etc,
     Second Key is more specific types like resistance
-    The last performed skill will also count as a buff and will be first key "State", second key "Last Action"
+    The last performed combo skill will also count as a buff and will be first key "State", second key "Last Combo Skill"
    */
   val buffMap: MutMap[String, MutMap[String, BuffModel]] = new MutMap[String, MutMap[String,BuffModel]]()
   buffMap.put("Solo", new MutMap[String, BuffModel])
@@ -32,12 +34,25 @@ class SimModel(var openerQueue: MutQueue[OpenerModel], var nextAttack: NextAttac
     timeChange = 0
   }
 
-  def updateTime(buffModel: BuffModel, double: Double): BuffModel ={
-    buffModel.timeChange(double)
-    buffModel
+  private def removeBuff(mapForRemoval: MutMap[String, BuffModel], name: String): Unit ={
+    mapForRemoval.remove(name)
+    eventLog += (time + ":" + name + " falls off")
   }
 
   def updateTime(time: Double): Unit ={
-    buffMap.transform((_, v) => v.transform((_,v)  =>  updateTime(v, time)))
+    //buffMap.transform((_, v) => v.transform((_,v)  =>  updateTime(v, time)))
+    buffMap.values.foreach(firstMapValue =>
+    {
+      for (buffs <- firstMapValue){
+        buffs._2.timeChange(time)
+        if (buffs._2.valueMap("Time") <= 0){
+          removeBuff(firstMapValue, buffs._1)
+        }
+      }
+
+    }
+    )
+    timeChange += time
+
   }
 }

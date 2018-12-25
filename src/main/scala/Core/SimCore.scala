@@ -25,10 +25,12 @@ class SimCore(val jobInfo: JobInfo) {
   def nextAction(damageLog: Array[String]): Array[String] = {
 
 
-      //get the next type of attack from the list and also time until next action
-      val attackTuple: (SimModel => Unit, Double) = nextAttack.getNextAttack
-      currentTime = currentTime + attackTuple._2
-      attackTuple._1(simModel)
+    //get the next type of attack from the list and also time until next action
+    val attackTuple: (SimModel => Unit, Double) = nextAttack.getNextAttack
+    currentTime = currentTime + attackTuple._2
+    simModel.timeChange = attackTuple._2
+    simModel.generalFunctionMap("TimeChange")(simModel)
+    attackTuple._1(simModel)
       //Runs the target attack type and returns the values and states saved in the simModel variable
 
 

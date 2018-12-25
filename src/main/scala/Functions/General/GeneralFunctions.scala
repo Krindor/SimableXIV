@@ -6,23 +6,24 @@ import models.{OpenerModel, SimModel}
 import scala.collection.mutable.{HashMap => mutHashMap}
 
 class GeneralFunctions extends FuncInterface {
-  //Initiates and attack
+  //Initiates an attack
   def attackStart(simModel: SimModel): Unit ={
     simModel.nextAttack.addFunction(simModel.generalFunctionMap("End"), "End", simModel.attackMap(simModel.actionName).castTime)
     simModel.nextAttack.removeFunction("Start")
+    simModel.eventLog += (simModel.time + ":Starts casting " + simModel.actionName)
+
   }
   //When the cast/attack actually finishes
   def attackEnd(simModel: SimModel): Unit ={
     simModel.nextAttack.addFunction(simModel.generalFunctionMap("ApplyAttack"), "ApplyAttack",simModel.attackMap(simModel.actionName).applicationOffset)
     simModel.snapShotBuffMap = simModel.buffMap
     simModel.nextAttack.removeFunction("End")
-    simModel.generalFunctionMap("TimeChange")(simModel)
+    simModel.eventLog += (simModel.time + ":Finishes casting " + simModel.actionName)
+
   }
 
   def damageOverTime(simModel: SimModel): Unit ={
-    for (dot <- simModel.buffMap("DamageOverTime")){
-      //deal damage
-    }
+    simModel.buffMap("DamageOverTime").values.foreach(value => value.runAttack(simModel))
   }
 
   def actionPicker(simModel: SimModel): Unit ={
@@ -35,13 +36,12 @@ class GeneralFunctions extends FuncInterface {
 
     simModel.attackMap(simModel.actionName).runAttack(simModel)
     simModel.nextAttack.removeFunction("ApplyAttack")
-
+    simModel.cleanResults()
 
   }
 
   def runOpener(simModel: SimModel): Unit = {
     //removes the first element in the queue containing the opener order
-
 
     val openerModel: OpenerModel = simModel.openerQueue.dequeue()
 
@@ -59,7 +59,6 @@ class GeneralFunctions extends FuncInterface {
 
   def changeTime(simModel:SimModel): Unit ={
     simModel.updateTime(simModel.timeChange)
-
   }
 
   def getFunctions: mutHashMap[String, SimModel => Unit] ={
@@ -70,6 +69,7 @@ class GeneralFunctions extends FuncInterface {
     hashMap.put("Opener", runOpener)
     hashMap.put("ActionPicker", actionPicker)
     hashMap.put("ApplyAttack", applyAttack)
+    hashMap.put("Time Change", changeTime)
     hashMap
   }
 //I don't even know why this is here
