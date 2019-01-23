@@ -1,7 +1,6 @@
 # SimableXIV [![Build Status](https://travis-ci.org/Krindor/SimableXIV.svg?branch=master)](https://travis-ci.org/Krindor/SimableXIV)
 SimableXIV is a Final Fantasy XIV Simulation Library intented to be used as a tool to assist players in testing out rotations, gear, openers etc and also for theorycrafting. While the sim is built for FFXIV a lot of the classes and methods should be reusable for other games with slight changes to accomodate the differences. 
-
-While this repository will be the main repository, the final program is planned to be developed as a Scala.js project and hosted as a web application. The repository for the Scala.js project will be created later on when the project gets closer to being in a state where a GUI can be created for it. 
+ 
 ## Parts needed for the basic application
 * Finish the change of time and functions related to it
 * Adding effects to buffs

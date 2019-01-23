@@ -31,7 +31,7 @@ class GeneralFunctions extends FuncInterface {
     simModel.actionName = simModel.rotationLogic.check(simModel)._2
 
   }
-  //When the buffs actually apply(Fuck Square) will also calculate the damage here
+  //When the buffs actually apply will also calculate the damage here
   def applyAttack(simModel: SimModel): Unit ={
 
     simModel.attackMap(simModel.actionName).runAttack(simModel)

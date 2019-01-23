@@ -8,6 +8,8 @@ import scala.collection.mutable.{ArrayBuffer, Queue => MutQueue}
 
 class GeneralAttackFunctions extends AttackFuncInterface{
 
+
+  //check if the state matches the condition for it to fire
   def stateCheck(simModel: SimModel, oldMutQueue: MutQueue[String]): Unit ={
     val mutQueue = oldMutQueue
     val arraySize = 2
@@ -18,9 +20,7 @@ class GeneralAttackFunctions extends AttackFuncInterface{
     Array(2) = name of function to execute if first check fails
      */
 
-
     for (_ <- 0 to arraySize){
-
       stringArray += mutQueue.dequeue()
     }
     print(" Done with Loop")
@@ -36,8 +36,6 @@ class GeneralAttackFunctions extends AttackFuncInterface{
       }
 
     print(" Done with match")
-
-
   }
   /*
   Queue(0) = If it was called from a check type function or not

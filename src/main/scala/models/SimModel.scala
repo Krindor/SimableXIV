@@ -2,11 +2,14 @@ package models
 import models.RotationLogic.StateCheck
 import timers.NextAttack
 
-import scala.collection.mutable
+
 import scala.collection.mutable.{HashMap => MutMap, Queue => MutQueue, ArrayBuffer => MutArray}
-//Contains variables handled in the core to ease passing them
-class SimModel(var openerQueue: MutQueue[OpenerModel], var nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimModel => Unit], val formulaMap: MutMap[String, (SimModel, Double )=> (Double, Double)], var statModel: StatModel,
-               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimModel, mutable.Queue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
+/*
+   Contains variables handled in the core to ease passing them
+   Be careful when changing anything in this class as it could easily break other things
+ */
+class SimModel(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimModel => Unit], val formulaMap: MutMap[String, (SimModel, Double )=> (Double, Double)], val statModel: StatModel,
+               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimModel, MutQueue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
   var potencyResult: Double = 0
   var critResult: Double = 0
   var checkSuccess: Boolean = false
