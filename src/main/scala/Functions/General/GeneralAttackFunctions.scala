@@ -1,16 +1,17 @@
 package Functions.General
 
+import Core.SimState
 import Interfaces.AttackFuncInterface
-import models.{BuffModel, SimModel}
+import models.BuffModel
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, Queue => MutQueue}
-
+//Most classes here will be changed later to allow less checks to be performed once
 class GeneralAttackFunctions extends AttackFuncInterface{
 
 
   //check if the state matches the condition for it to fire
-  def stateCheck(simModel: SimModel, oldMutQueue: MutQueue[String]): Unit ={
+  def stateCheck(simModel: SimState, oldMutQueue: MutQueue[String]): Unit ={
     val mutQueue = oldMutQueue
     val arraySize = 2
     var stringArray: ArrayBuffer[String] = new ArrayBuffer[String](arraySize)
@@ -25,7 +26,7 @@ class GeneralAttackFunctions extends AttackFuncInterface{
     }
     print(" Done with Loop")
     match {
-      case _ if simModel.buffMap("Solo").contains(stringArray(0))=>
+      case _ if simModel.buffMap("Solo")("Last Action").stringValue == stringArray(0)=>
         simModel.checkSuccess=true
         simModel.attackFunctionMap(stringArray(1))(simModel, mutQueue)
 
@@ -42,7 +43,7 @@ class GeneralAttackFunctions extends AttackFuncInterface{
   Queue(1) = Success Potency/Normal potency
   Queue(2) = Fail Potency
    */
-  def applyPotency(simModel: SimModel, oldMutQueue: MutQueue[String]): Unit ={
+  def applyPotency(simModel: SimState, oldMutQueue: MutQueue[String]): Unit ={
 
     oldMutQueue.head match {
       case "Check" =>
@@ -57,7 +58,7 @@ class GeneralAttackFunctions extends AttackFuncInterface{
   Queue(0) = general buff type
   Queue(1) = target buff name
    */
-  def addBuff(simModel: SimModel, mutQueue: MutQueue[String]): Unit ={
+  def addBuff(simModel: SimState, mutQueue: MutQueue[String]): Unit ={
     val oldMutQueue = mutQueue
     simModel.buffMap(oldMutQueue.dequeue()).put(oldMutQueue.head, simModel.buffModelMap(oldMutQueue.dequeue()))
 
@@ -65,7 +66,7 @@ class GeneralAttackFunctions extends AttackFuncInterface{
   /*
   Queue(0) = DoT Name
    */
-  def addDoT(simModel: SimModel, mutQueue: MutQueue[String]): Unit = {
+  def addDoT(simModel: SimState, mutQueue: MutQueue[String]): Unit = {
     val oldMutQueue = mutQueue
     val dotName = oldMutQueue.dequeue()
     val buffModel: BuffModel = simModel.buffModelMap(dotName)
@@ -73,19 +74,31 @@ class GeneralAttackFunctions extends AttackFuncInterface{
     simModel.buffMap("DamageOverTime").put(oldMutQueue.head, simModel.buffModelMap(dotName))
   }
 
-  def removeBuff(oldSimModel: SimModel, mutQueue: MutQueue[String]): Unit ={
+  def removeBuff(oldSimModel: SimState, mutQueue: MutQueue[String]): Unit ={
     val oldMutQueue = mutQueue
     oldSimModel.buffMap(oldMutQueue.dequeue()).remove(oldMutQueue.dequeue())
+
+  }
+  /*
+  Queue(0) = action name
+   */
+  def updateLastAction(simModel: SimState, mutQueue: MutQueue[String]): Unit ={
+    val oldMutQueue = mutQueue
+    val buffModel:BuffModel = simModel.buffModelMap("Last Action")
+    buffModel.stringValue = oldMutQueue.dequeue()
+    simModel.buffMap("Solo").put("Last Action", buffModel)
 
   }
 
 
 
-  def getAttackFunctions: mutable.HashMap[String, (SimModel, mutable.Queue[String]) => Unit] ={
-    val mutMap: mutable.HashMap[String, (SimModel, mutable.Queue[String]) => Unit] = new mutable.HashMap[String, (SimModel, mutable.Queue[String]) => Unit]
+  def getAttackFunctions: mutable.HashMap[String, (SimState, mutable.Queue[String]) => Unit] ={
+    val mutMap: mutable.HashMap[String, (SimState, mutable.Queue[String]) => Unit] = new mutable.HashMap[String, (SimState, mutable.Queue[String]) => Unit]
     mutMap.put("State Check", stateCheck)
     mutMap.put("Add Buff", addBuff)
     mutMap.put("Remove Buff", removeBuff)
+    mutMap.put("Add DoT", addDoT)
+    mutMap.put("Last Action", updateLastAction)
     mutMap
   }
 

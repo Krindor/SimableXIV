@@ -9,5 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.github.plokhotnyuk.jsoniter-scala:core_2.13.0-M4:0.28.1" level="project" />
+    <orderEntry type="library" name="com.github.plokhotnyuk.jsoniter-scala:jsoniter-scala-macros_2.13.0-M4:0.29.12" level="project" />
   </component>
 </module>

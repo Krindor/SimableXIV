@@ -1,7 +1,9 @@
-package models
+package Core
+
 import Enums.BuffMapTypes
 import Enums.BuffMapTypes.BuffMapTypes
 import models.RotationLogic.StateCheck
+import models.{BuffModel, OpenerModel, SkillModel, StatModel}
 import timers.NextAttack
 
 import scala.collection.mutable.{ArrayBuffer => MutArray, HashMap => MutMap, Queue => MutQueue}
@@ -9,8 +11,8 @@ import scala.collection.mutable.{ArrayBuffer => MutArray, HashMap => MutMap, Que
    Contains variables handled in the core to ease passing them
    Be careful when changing anything in this class as it could easily break other things
  */
-class SimModel(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimModel => Unit], val formulaMap: MutMap[String, (SimModel, Double )=> (Double, Double)], val statModel: StatModel,
-               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimModel, MutQueue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
+class SimState(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimState => Unit], val formulaMap: MutMap[String, (SimState, Double )=> (Double, Double)], val statModel: StatModel,
+               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimState, MutQueue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
   var potencyResult: Double = 0
   var critResult: Double = 0
   var checkSuccess: Boolean = false

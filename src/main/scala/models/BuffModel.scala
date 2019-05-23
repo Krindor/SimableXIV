@@ -1,14 +1,19 @@
 package models
 
+import Core.SimState
+import Interfaces.{SkillInterface, SkillModelInterface}
+
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap => MutMap}
 
-class BuffModel(val damageOverTimePotency: Double = 0, val name: String, val  checkArray: ArrayBuffer[(SimModel, mutable.Queue[String]) => Unit],
-                val queueForCheckArray: ArrayBuffer[mutable.Queue[String]]) {
+class BuffModel(val name: String, val  checkArray: ArrayBuffer[(SimState, mutable.Queue[String]) => Unit],
+                val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val damageOverTimePotency: Double = 0) extends SkillModelInterface{
+
   var buffMap: MutMap[String, MutMap[String, BuffModel]] = new MutMap[String, MutMap[String,BuffModel]]()
 
-  private val pairing = checkArray zip queueForCheckArray
+  val skillIArray: Array[SkillInterface] = createSkillIArray(name)
 
+  var stringValue:String = _
 
   val valueMap: MutMap[String, Double] = new MutMap[String, Double]()
   valueMap.put("Time", 0)
@@ -30,14 +35,6 @@ class BuffModel(val damageOverTimePotency: Double = 0, val name: String, val  ch
     valueMap.update("Stack", 0)
   }
 
-  def runAttack(oldSimModel: SimModel): Unit ={
 
-    for ((check, queue) <- pairing){
-
-      check(oldSimModel, queue)
-      print(" ran check")
-    }
-
-  }
 
 }

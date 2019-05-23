@@ -1,5 +1,7 @@
 # SimableXIV [![Build Status](https://travis-ci.org/Krindor/SimableXIV.svg?branch=master)](https://travis-ci.org/Krindor/SimableXIV)
-SimableXIV is a Final Fantasy XIV Simulation Library intented to be used as a tool to assist players in testing out rotations, gear, openers etc and also for theorycrafting. While the sim is built for FFXIV a lot of the classes and methods should be reusable for other games with slight changes to accomodate the differences. 
+SimableXIV is a Final Fantasy XIV Simulation Library intended to be used as a tool to assist players in testing out rotations, gear, 
+openers etc and also for theorycrafting. While the sim is built for FFXIV a lot of the classes and methods should be reusable for other 
+games with slight changes to accomodate the differences. 
  
 ## Parts needed for the basic application
 * Finish the change of time and functions related to it

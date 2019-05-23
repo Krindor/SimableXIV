@@ -1,7 +1,7 @@
 package Interfaces
 
-import models.SimModel
+import Core.SimState
 
 trait RotationLogicInterface {
-  def check(simModel: SimModel): (Boolean, String)
+  def check(simModel: SimState): (Boolean, String)
 }
