@@ -1,6 +1,6 @@
 package models.RotationLogic
 
-import models.SimModel
+import Core.SimState
 
 
 class ConditionLogic(array: Array[String]) {
@@ -10,7 +10,7 @@ class ConditionLogic(array: Array[String]) {
   private val targetMap = array(3)
   private val targetValue = array(4)
 
-  private var logic: (Double, SimModel, Double) => Boolean = _
+  private var logic: (Double, SimState, Double) => Boolean = _
     comparer(1) match {
       case '>' => logic = moreThan
       case '=' => logic = equalTo
@@ -20,18 +20,18 @@ class ConditionLogic(array: Array[String]) {
 
 
 
-  def check(simModel: SimModel): Boolean= {
+  def check(simModel: SimState): Boolean= {
     val value = simModel.buffMap(targetMap)(targetName).valueMap(targetValue)
     logic(value, simModel, comparingValue)
   }
 
-  def moreThan(value:Double, simModel: SimModel, comparingValue:Double): Boolean = { if (value > comparingValue) true else false}
+  def moreThan(value:Double, simModel: SimState, comparingValue:Double): Boolean = { if (value > comparingValue) true else false}
 
-  def equalTo(value:Double, simModel: SimModel, comparingValue:Double): Boolean = { if (value.equals(comparingValue)) true else false}
+  def equalTo(value:Double, simModel: SimState, comparingValue:Double): Boolean = { if (value.equals(comparingValue)) true else false}
 
-  def lessThan(value:Double, simModel: SimModel, comparingValue:Double): Boolean = { if (value < comparingValue) true else false}
+  def lessThan(value:Double, simModel: SimState, comparingValue:Double): Boolean = { if (value < comparingValue) true else false}
 
-  def exists(value:Double, simModel: SimModel, comparingValue:Double): Boolean = {
+  def exists(value:Double, simModel: SimState, comparingValue:Double): Boolean = {
     if (comparingValue == 0 && value == 0) true
     else if (comparingValue == 1 && value >= 1) true
     else false

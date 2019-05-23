@@ -1,9 +1,9 @@
 package Interfaces
 
-import models.SimModel
+import Core.SimState
 
 import scala.collection.mutable
 
 trait AttackFuncInterface {
-  def getAttackFunctions: mutable.HashMap[String, (SimModel, mutable.Queue[String]) => Unit]
+  def getAttackFunctions: mutable.HashMap[String, (SimState, mutable.Queue[String]) => Unit]
 }

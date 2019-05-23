@@ -1,15 +1,18 @@
-package models
+package Core
+
+import Enums.BuffMapTypes
+import Enums.BuffMapTypes.BuffMapTypes
 import models.RotationLogic.StateCheck
+import models.{BuffModel, OpenerModel, SkillModel, StatModel}
 import timers.NextAttack
 
-
-import scala.collection.mutable.{HashMap => MutMap, Queue => MutQueue, ArrayBuffer => MutArray}
+import scala.collection.mutable.{ArrayBuffer => MutArray, HashMap => MutMap, Queue => MutQueue}
 /*
    Contains variables handled in the core to ease passing them
    Be careful when changing anything in this class as it could easily break other things
  */
-class SimModel(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimModel => Unit], val formulaMap: MutMap[String, (SimModel, Double )=> (Double, Double)], val statModel: StatModel,
-               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimModel, MutQueue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
+class SimState(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttack, val generalFunctionMap: MutMap[String, SimState => Unit], val formulaMap: MutMap[String, (SimState, Double )=> (Double, Double)], val statModel: StatModel,
+               val attackMap: MutMap[String, SkillModel], val attackFunctionMap: MutMap[String, (SimState, MutQueue[String]) => Unit], val buffModelMap: MutMap[String, BuffModel], val rotationLogic: StateCheck) {
   var potencyResult: Double = 0
   var critResult: Double = 0
   var checkSuccess: Boolean = false
@@ -23,12 +26,11 @@ class SimModel(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttac
     Second Key is more specific types like resistance
     The last performed combo skill will also count as a buff and will be first key "State", second key "Last Combo Skill"
    */
-  val buffMap: MutMap[String, MutMap[String, BuffModel]] = new MutMap[String, MutMap[String,BuffModel]]()
-  buffMap.put("Solo", new MutMap[String, BuffModel])
-  buffMap.put("Party", new MutMap[String, BuffModel])
-  buffMap.put("Target", new MutMap[String, BuffModel])
-  buffMap.put("Cooldowns", new MutMap[String, BuffModel])
-  buffMap.put("DamageOverTime", new MutMap[String, BuffModel])
+  val buffMap: MutMap[BuffMapTypes, MutMap[String, BuffModel]] = new MutMap[BuffMapTypes, MutMap[String,BuffModel]]()
+  for (i <- BuffMapTypes.values){
+    buffMap.put(i, new MutMap[String, BuffModel])
+  }
+
 
   def cleanResults(): Unit = {
     potencyResult = 0

@@ -1,10 +1,10 @@
 package Interfaces
 
-import models.SimModel
+import Core.SimState
 
 import scala.collection.mutable
 
 trait FormulaInterface {
-  def getFormulas: mutable.HashMap[String, (SimModel, Double) => (Double, Double)]
+  def getFormulas: mutable.HashMap[String, (SimState, Double) => (Double, Double)]
 
 }

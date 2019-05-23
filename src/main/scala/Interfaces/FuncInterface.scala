@@ -1,10 +1,10 @@
 package Interfaces
 
-import models.SimModel
+import Core.SimState
 
 import scala.collection.mutable.{HashMap => MutMap}
 
 trait FuncInterface {
-  def getFunctions: MutMap[String, SimModel => Unit]
+  def getFunctions: MutMap[String, SimState => Unit]
 
 }

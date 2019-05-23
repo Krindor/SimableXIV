@@ -1,7 +1,6 @@
 package Core
 
 import BaseClasses.JobInfo
-import models.SimModel
 import timers.NextAttack
 
 /*
@@ -12,7 +11,7 @@ class SimCore(val jobInfo: JobInfo) {
 
   private var currentTime: Double = 0
   private val nextAttack:NextAttack = new NextAttack
-  private val simModel: SimModel = jobInfo.simModel
+  private val simModel: SimState = jobInfo.simModel
 
   simModel.FormulaResult.put("Skill Speed", simModel.formulaMap("Skill Speed")(simModel, 0)._1)
   simModel.FormulaResult.put("Spell Speed", simModel.formulaMap("Spell Speed")(simModel, 0)._1)
@@ -26,7 +25,7 @@ class SimCore(val jobInfo: JobInfo) {
 
 
     //get the next type of attack from the list and also time until next action
-    val attackTuple: (SimModel => Unit, Double) = nextAttack.getNextAttack
+    val attackTuple: (SimState => Unit, Double) = nextAttack.getNextAttack
     currentTime = currentTime + attackTuple._2
     simModel.timeChange = attackTuple._2
     simModel.generalFunctionMap("TimeChange")(simModel)
