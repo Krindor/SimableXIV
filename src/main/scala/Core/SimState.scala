@@ -1,9 +1,10 @@
 package models
+import Enums.BuffMapTypes
+import Enums.BuffMapTypes.BuffMapTypes
 import models.RotationLogic.StateCheck
 import timers.NextAttack
 
-
-import scala.collection.mutable.{HashMap => MutMap, Queue => MutQueue, ArrayBuffer => MutArray}
+import scala.collection.mutable.{ArrayBuffer => MutArray, HashMap => MutMap, Queue => MutQueue}
 /*
    Contains variables handled in the core to ease passing them
    Be careful when changing anything in this class as it could easily break other things
@@ -23,12 +24,11 @@ class SimModel(val openerQueue: MutQueue[OpenerModel], val nextAttack: NextAttac
     Second Key is more specific types like resistance
     The last performed combo skill will also count as a buff and will be first key "State", second key "Last Combo Skill"
    */
-  val buffMap: MutMap[String, MutMap[String, BuffModel]] = new MutMap[String, MutMap[String,BuffModel]]()
-  buffMap.put("Solo", new MutMap[String, BuffModel])
-  buffMap.put("Party", new MutMap[String, BuffModel])
-  buffMap.put("Target", new MutMap[String, BuffModel])
-  buffMap.put("Cooldowns", new MutMap[String, BuffModel])
-  buffMap.put("DamageOverTime", new MutMap[String, BuffModel])
+  val buffMap: MutMap[BuffMapTypes, MutMap[String, BuffModel]] = new MutMap[BuffMapTypes, MutMap[String,BuffModel]]()
+  for (i <- BuffMapTypes.values){
+    buffMap.put(i, new MutMap[String, BuffModel])
+  }
+
 
   def cleanResults(): Unit = {
     potencyResult = 0

@@ -1,0 +1,5 @@
+package Interfaces
+
+trait SkillModelInterface {
+
+}

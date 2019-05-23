@@ -1,0 +1,5 @@
+package AbstractMemeFactoryBuilderFactoryBeans
+
+class SkillBlueprint {
+
+}

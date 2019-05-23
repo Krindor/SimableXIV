@@ -1,0 +1,5 @@
+package Enums
+
+class SkillInputEnum {
+
+}
