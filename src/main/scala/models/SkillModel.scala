@@ -1,16 +1,21 @@
 package models
 
 
+import Core.SimState
 import Interfaces.{SkillInterface, SkillModelInterface}
 
 
+case class SkillModel(skillName: String, skillType: String, baseRecast: Double = 2.5,
+  castTime: Double = 0, applicationOffset: Double = 0) extends SkillModelInterface {
+  //createSkillIArray is going to rewritten
+  val skillI = createSkillI(skillName)
+  val skillIArray: Array[SkillInterface] = Array(skillI)
 
-class SkillModel (val skillName: String, val skillType: String, val baseRecast: Double = 2.5,
-                 val castTime: Double = 0, val applicationOffset: Double = 0) extends SkillModelInterface  {
 
-  val skillIArray: Array[SkillInterface] = createSkillIArray(skillName)
+  def run(simState: SimState): Unit = {
 
+    runAttack(simState, skillIArray)
 
-
+  }
 
 }

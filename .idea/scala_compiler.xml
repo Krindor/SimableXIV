@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Gradle 2" modules="SimableXIV_main,SimableXIV_test">
-      <option name="deprecationWarnings" value="true" />
-      <option name="uncheckedWarnings" value="true" />
-      <parameters>
-        <parameter value="-target:jvm-1.8" />
-      </parameters>
+    <profile name="sbt 1" modules="simablexiv" />
+    <profile name="sbt 2" modules="SimableXIV">
+      <plugins>
+        <plugin path="C:\Users\andre\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-js\scalajs-compiler_2.13.2\1.1.0\scalajs-compiler_2.13.2-1.1.0.jar" />
+      </plugins>
     </profile>
   </component>
 </project>

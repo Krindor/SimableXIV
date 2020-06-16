@@ -14,5 +14,4 @@ class AttributeModel(var strength: Int = 1, var dexterity: Int = 1, var vitality
   }
 
 
-
 }

@@ -1,86 +1,94 @@
 package Functions.General
 
 import Core.SimState
-import Interfaces.FuncInterface
+import Enums.GeneralFunctionNames.GeneralFunctionNames
+import Enums.{BuffMapTypes, GeneralFunctionNames}
 import models.OpenerModel
 
 import scala.collection.mutable.{HashMap => mutHashMap}
 
-class GeneralFunctions extends FuncInterface {
+object GeneralFunctions {
+
+  val hashMap: mutHashMap[GeneralFunctionNames, SimState => Unit] = new mutHashMap[GeneralFunctionNames, SimState => Unit]
+  hashMap.put(GeneralFunctionNames.Start, attackStart)
+  hashMap.put(GeneralFunctionNames.End, attackEnd)
+  hashMap.put(GeneralFunctionNames.DamageOverTime, damageOverTime)
+  hashMap.put(GeneralFunctionNames.Opener, runOpener)
+  hashMap.put(GeneralFunctionNames.ActionPicker, actionPicker)
+  hashMap.put(GeneralFunctionNames.ApplyAttack, applyAttack)
+  hashMap.put(GeneralFunctionNames.TimeChange, changeTime)
+
+  def getFunction(functionName:GeneralFunctionNames): SimState => Unit = hashMap(functionName)
+
   //Initiates an attack
-  def attackStart(simModel: SimState): Unit ={
-    simModel.nextAttack.addFunction(simModel.generalFunctionMap("End"), "End", simModel.attackMap(simModel.actionName).castTime)
-    simModel.nextAttack.removeFunction("Start")
+  def attackStart(simModel: SimState): Unit = {
+    simModel.nextAttack.addFunction(GeneralFunctions.getFunction(GeneralFunctionNames.End), GeneralFunctionNames.End, simModel.attackMap(simModel.actionName).castTime)
+    simModel.nextAttack.removeFunction(GeneralFunctionNames.Start)
     simModel.eventLog += (simModel.time + ":Starts casting " + simModel.actionName)
 
   }
+
   //When the cast/attack actually finishes
-  def attackEnd(simModel: SimState): Unit ={
-    simModel.nextAttack.addFunction(simModel.generalFunctionMap("ApplyAttack"), "ApplyAttack",simModel.attackMap(simModel.actionName).applicationOffset)
+  def attackEnd(simModel: SimState): Unit = {
+    simModel.nextAttack.addFunction(GeneralFunctions.getFunction(GeneralFunctionNames.ApplyAttack), GeneralFunctionNames.ApplyAttack, simModel.attackMap(simModel.actionName).applicationOffset)
     simModel.snapShotBuffMap = simModel.buffMap
-    simModel.nextAttack.removeFunction("End")
+    simModel.nextAttack.removeFunction(GeneralFunctionNames.End)
     simModel.eventLog += (simModel.time + ":Finishes casting " + simModel.actionName)
 
   }
 
-  def damageOverTime(simModel: SimState): Unit ={
-    simModel.buffMap("DamageOverTime").values.foreach(value => value.runAttack(simModel))
+  def damageOverTime(simState: SimState): Unit = {
+    simState.buffMap(BuffMapTypes.DamageOverTime).values.foreach(value => value.run(simState))
   }
 
-  def actionPicker(simModel: SimState): Unit ={
+  def actionPicker(simModel: SimState): Unit = {
     //runs the check and returns the name of the action, or none if it didn't find any that matches the current state
     simModel.actionName = simModel.rotationLogic.check(simModel)._2
 
   }
-  //When the buffs actually apply will also calculate the damage here
-  def applyAttack(simModel: SimState): Unit ={
 
-    simModel.attackMap(simModel.actionName).runAttack(simModel)
-    simModel.nextAttack.removeFunction("ApplyAttack")
-    simModel.cleanResults()
+  //When the buffs actually apply will also calculate the damage here
+  def applyAttack(simState: SimState): Unit = {
+
+    simState.attackMap(simState.actionName).run(simState)
+    simState.nextAttack.removeFunction(GeneralFunctionNames.ApplyAttack)
+    simState.cleanResults()
 
   }
 
-  def runOpener(simModel: SimState): Unit = {
+  def runOpener(simState: SimState): Unit = {
     //removes the first element in the queue containing the opener order
 
-    val openerModel: OpenerModel = simModel.openerQueue.dequeue()
+    val openerModel: OpenerModel = simState.openerQueue.dequeue()
 
-    val attack = simModel.attackMap(openerModel.skillName)
-    attack.runAttack(simModel)
+    val attack = simState.attackMap(openerModel.skillName)
+    attack.run(simState)
     //removes the opener and adds more specific types to handle the rotation
-    if (simModel.openerQueue.isEmpty) {
-      simModel.nextAttack.removeFunction("Opener")
-      for (i <- simModel.generalFunctionMap) {
-        simModel.nextAttack.addFunction(i._2, i._1)
+    if (simState.openerQueue.isEmpty) {
+      simState.nextAttack.removeFunction(GeneralFunctionNames.Opener)
+      for (i <- GeneralFunctionNames.values) {
+        if (!i.equals(GeneralFunctionNames.Opener)) {
+          simState.nextAttack.addFunction(GeneralFunctions.getFunction(i), i)
+        }
       }
     }
 
   }
 
-  def changeTime(simModel:SimState): Unit ={
+  def changeTime(simModel: SimState): Unit = {
     simModel.updateTime(simModel.timeChange)
   }
 
-  def getFunctions: mutHashMap[String, SimState => Unit] ={
-    val hashMap: mutHashMap[String, SimState => Unit] = new mutHashMap[String, SimState => Unit]
-    hashMap.put("Start", attackStart)
-    hashMap.put("End", attackEnd)
-    hashMap.put("DamageOverTime", damageOverTime)
-    hashMap.put("Opener", runOpener)
-    hashMap.put("ActionPicker", actionPicker)
-    hashMap.put("ApplyAttack", applyAttack)
-    hashMap.put("Time Change", changeTime)
-    hashMap
-  }
-//I don't even know why this is here
-  def applyCritDamage(simModel: SimState): (Double, Double)={
+  //I don't even know why this is here
+  /*def applyCritDamage(simModel: SimState): (Double, Double) = {
     val critResult: (Double, Double) = simModel.formulaMap("Crit")(simModel, 0)
 
     critResult._2 match {
       case 0 => (1, critResult._2)
-      case 1 => (critResult._1+1.45, critResult._2)
-      case 2 => (1+((critResult._1 + 0.05) * (critResult._1 + 0.45)), critResult._2)
+      case 1 => (critResult._1 + 1.45, critResult._2)
+      case 2 => (1 + ((critResult._1 + 0.05) * (critResult._1 + 0.45)), critResult._2)
     }
   }
+
+   */
 }

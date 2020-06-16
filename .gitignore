@@ -6,7 +6,8 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-.idea/**/gradle.xml
 .idea/**/libraries
 .idea/*.iml
 .idea/modules
+/src/test/
+target\

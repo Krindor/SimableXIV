@@ -1,11 +1,5 @@
-import BaseClasses.JobInfo
-import Core.SimCore
-import Functions.General._
-import models._
-import timers.NextAttack
 
-import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, HashMap => MutMap}
+
 /*
 object MainTest {
   def main(args: Array[String]): Unit = {
