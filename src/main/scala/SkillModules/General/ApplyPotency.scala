@@ -2,9 +2,9 @@ package SkillModules.General
 
 import Blueprints.FunctionBlueprint
 import Core.SimState
-import Interfaces.SkillInterface
+import Interfaces.SkillModuleInterface
 
-class ApplyPotency extends SkillInterface {
+class ApplyPotency extends SkillModuleInterface {
 
   private var isItACheck: Boolean = false
   private var successOrNormalPot: Double = _
@@ -20,13 +20,9 @@ class ApplyPotency extends SkillInterface {
   }
 
   def run(simModel: SimState): Unit = {
-    if (isItACheck) {
-      if (simModel.checkSuccess) {
-        simModel.potencyResult = successOrNormalPot
-      }
-      else simModel.potencyResult = failPot
-    }
-    else simModel.potencyResult = successOrNormalPot
+    if (simModel.checkSuccess || !isItACheck) simModel.potencyResult = successOrNormalPot
+    else simModel.potencyResult = failPot
+
   }
 
 }

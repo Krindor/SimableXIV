@@ -3,10 +3,10 @@ package SkillModules.General
 import Blueprints.FunctionBlueprint
 import Core.SimState
 import Enums.BuffMapTypes
-import Interfaces.SkillInterface
+import Interfaces.SkillModuleInterface
 
 
-class AddDot extends SkillInterface {
+class AddDot extends SkillModuleInterface {
 
 
   var dotName: String = _

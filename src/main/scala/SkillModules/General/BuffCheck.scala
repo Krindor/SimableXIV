@@ -3,14 +3,14 @@ package SkillModules.General
 import Blueprints.FunctionBlueprint
 import Core.SimState
 import Enums.BuffMapTypes
-import Interfaces.SkillInterface
+import Interfaces.SkillModuleInterface
 
-class BuffCheck extends SkillInterface {
+class BuffCheck extends SkillModuleInterface {
 
   private var targetBuff: String = _
   private var targetValue: String = _
-  private var trueArray: Array[SkillInterface] = _
-  private var falseArray: Array[SkillInterface] = _
+  private var trueArray: Array[SkillModuleInterface] = _
+  private var falseArray: Array[SkillModuleInterface] = _
 
   def buildSkill(skillBlueprint: FunctionBlueprint): Unit = {
     targetBuff = skillBlueprint.valueArray(0)
@@ -21,16 +21,16 @@ class BuffCheck extends SkillInterface {
     falseArray = arrays._2
   }
 
-  def run(simModel: SimState): Unit = {
-    if (simModel.buffMap(BuffMapTypes.Solo)(targetBuff).stringValue == targetValue) {
-      simModel.checkSuccess = true
+  def run(simState: SimState): Unit = {
+    if (simState.buffMap(BuffMapTypes.Solo)(targetBuff).stringValue == targetValue) {
+      simState.checkSuccess = true
       for (function <- trueArray)
-        function.run(simModel)
+        function.run(simState)
     }
     else {
-      simModel.checkSuccess = false
+      simState.checkSuccess = false
       for (function <- falseArray)
-        function.run(simModel)
+        function.run(simState)
     }
   }
 }

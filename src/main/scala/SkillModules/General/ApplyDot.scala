@@ -4,9 +4,9 @@ import Blueprints.FunctionBlueprint
 import Core.SimState
 import Enums.BuffMapTypes
 import Enums.BuffMapTypes.BuffMapTypes
-import Interfaces.SkillInterface
+import Interfaces.SkillModuleInterface
 
-class ApplyDot extends SkillInterface {
+class ApplyDot extends SkillModuleInterface {
 
   var buffMapType: BuffMapTypes = _
   var buffName: String = _

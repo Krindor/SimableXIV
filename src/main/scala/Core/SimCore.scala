@@ -13,7 +13,7 @@ class SimCore(val jobInfo: JobInfo) {
 
 
   private val nextAttack: NextAttack = new NextAttack
-  private val simModel: SimState = jobInfo.simModel
+  private val simState: SimState = jobInfo.simState
   private var currentTime: Double = 0
 
   //simModel.FormulaResult.put("Skill Speed", simModel.formulaMap("Skill Speed")(simModel, 0)._1)
@@ -31,9 +31,9 @@ class SimCore(val jobInfo: JobInfo) {
     //get the next type of attack from the list and also time until next action
     val attackTuple: (SimState => Unit, Double) = nextAttack.getNextAttack
     currentTime = currentTime + attackTuple._2
-    simModel.timeChange = attackTuple._2
+    simState.timeChange = attackTuple._2
     //simModel.generalFunctionMap("TimeChange")(simModel)
-    attackTuple._1(simModel)
+    attackTuple._1(simState)
     //Runs the target attack type and returns the values and states saved in the simModel variable
 
 

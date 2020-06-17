@@ -59,8 +59,7 @@ object MainTest {
     simCore.nextAction(new Array[String](150))
   }
 
-  def amIDumb(buffModel: BuffModel): Unit ={
-    buffModel.time = 1
+
 
 
 

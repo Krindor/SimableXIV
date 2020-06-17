@@ -18,7 +18,7 @@ object GeneralFunctions {
   hashMap.put(GeneralFunctionNames.ApplyAttack, applyAttack)
   hashMap.put(GeneralFunctionNames.TimeChange, changeTime)
 
-  def getFunction(functionName:GeneralFunctionNames): SimState => Unit = hashMap(functionName)
+  def getFunction(functionName: GeneralFunctionNames): SimState => Unit = hashMap(functionName)
 
   //Initiates an attack
   def attackStart(simModel: SimState): Unit = {

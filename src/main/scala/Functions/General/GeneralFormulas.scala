@@ -33,6 +33,7 @@ object GeneralFormulas {
   def dhFormula(simModel: SimState, customMod: Double = 0): (Double, Double) = {
     (((simModel.statModel.modifierModel.dhMod * (simModel.statModel.secondaryAttributeModel.directHit - simModel.statModel.modifierModel.substatLevelMod)) / simModel.statModel.modifierModel.divisorLevelMod) / 10, 0)
   }
+
   mutMap.put(FormulaNames.Damage, damageFormula)
   mutMap.put(FormulaNames.SkillSpeed, skillSpeedFormula)
   mutMap.put(FormulaNames.SpellSpeed, spellSpeedFormula)

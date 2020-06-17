@@ -3,9 +3,9 @@ package SkillModules.General
 import Blueprints.FunctionBlueprint
 import Core.SimState
 import Enums.BuffMapTypes
-import Interfaces.SkillInterface
+import Interfaces.SkillModuleInterface
 
-class UpdateLastAction extends SkillInterface {
+class UpdateLastAction extends SkillModuleInterface {
 
   val lastAction: String = "Last Action"
   var skillName: String = _

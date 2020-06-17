@@ -4,17 +4,22 @@ import Core.SimState
 import Enums.BuffMapTypes.BuffMapTypes
 import Enums.BuffValueNames
 import Enums.BuffValueNames.BuffValueNames
-import Interfaces.{SkillInterface, SkillModelInterface}
+import Factories.DuplicateSmacker
+import Interfaces.{SkillModelInterface, SkillModuleInterface}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap => MutMap}
 
-class BuffModel(val name: String, val checkArray: ArrayBuffer[(SimState, mutable.Queue[String]) => Unit],
-  val queueForCheckArray: ArrayBuffer[mutable.Queue[String]], val damageOverTimePotency: Double = 0) extends SkillModelInterface {
-  private val skillI = createSkillI(name)
-  val skillIArray: Array[SkillInterface] = Array(skillI)
+class BuffModel(
+                 val name: String,
+                 val checkArray: ArrayBuffer[(SimState, mutable.Queue[String]) => Unit],
+                 val queueForCheckArray: ArrayBuffer[mutable.Queue[String]],
+                 val damageOverTimePotency: Double = 0
+               ) extends SkillModelInterface {
+
+  val skillIArray: Array[SkillModuleInterface] = createSkillI(name)
   val valueMap: MutMap[BuffValueNames, Double] = new MutMap[BuffValueNames, Double]()
-  var buffMap: MutMap[BuffMapTypes, MutMap[String, BuffModel]] = new MutMap[BuffMapTypes, MutMap[String, BuffModel]]()
+  var buffMap: MutMap[BuffMapTypes, MutMap[String, BuffModel]] = DuplicateSmacker.createBuffMap()
   var stringValue: String = _
   valueMap.put(BuffValueNames.Time, 0)
   valueMap.put(BuffValueNames.Stack, 0)
