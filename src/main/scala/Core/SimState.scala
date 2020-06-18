@@ -11,9 +11,10 @@ import Functions.General.GeneralFunctions
 
 import scala.collection.mutable.{ArrayBuffer => MutArray, HashMap => MutMap, Queue => MutQueue}
 
-/*
-   Contains variables handled in the core to ease passing them
-   Be careful when changing anything in this class as it could easily break other things
+/**
+ * Contains variables handled in the core to ease passing them
+ * As this class is passed along to almost all parts of the sim
+ * performing changes might break or have unexpected effects.
  */
 class SimState(
                 val openerQueue: MutQueue[OpenerModel],

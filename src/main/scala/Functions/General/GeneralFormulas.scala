@@ -18,20 +18,20 @@ object GeneralFormulas {
     (weaponMulti * detMulti * mainMulti, 1)
   }
 
-  def skillSpeedFormula(simModel: SimState, customMod: Double = 2.5): (Double, Double) = {
-    (1000 - (130 * ((simModel.statModel.secondaryAttributeModel.skillSpeed - simModel.statModel.modifierModel.substatLevelMod) / simModel.statModel.modifierModel.divisorLevelMod)), 0)
+  def skillSpeedFormula(simState: SimState, customMod: Double = 2.5): (Double, Double) = {
+    (1000 - (simState.statModel.modifierModel.ssMod * ((simState.statModel.secondaryAttributeModel.skillSpeed - simState.statModel.modifierModel.substatLevelMod) / simState.statModel.modifierModel.divisorLevelMod)), 0)
   }
 
-  def spellSpeedFormula(simModel: SimState, customMod: Double = 2.5): (Double, Double) = {
-    (1000 - (130 * ((simModel.statModel.secondaryAttributeModel.spellSpeed - simModel.statModel.modifierModel.substatLevelMod) / simModel.statModel.modifierModel.divisorLevelMod)), 0)
+  def spellSpeedFormula(simState: SimState, customMod: Double = 2.5): (Double, Double) = {
+    (1000 - (simState.statModel.modifierModel.ssMod * ((simState.statModel.secondaryAttributeModel.spellSpeed - simState.statModel.modifierModel.substatLevelMod) / simState.statModel.modifierModel.divisorLevelMod)), 0)
   }
 
-  def critChanceFormula(simModel: SimState, customMod: Double = 0): (Double, Double) = {
-    (((simModel.statModel.modifierModel.critMod * (simModel.statModel.secondaryAttributeModel.criticalHit - simModel.statModel.modifierModel.substatLevelMod)) / simModel.statModel.modifierModel.divisorLevelMod) / 10, 0)
+  def critChanceFormula(simState: SimState, customMod: Double = 0): (Double, Double) = {
+    (((simState.statModel.modifierModel.critMod * (simState.statModel.secondaryAttributeModel.criticalHit - simState.statModel.modifierModel.substatLevelMod)) / simState.statModel.modifierModel.divisorLevelMod) / 10, 0)
   }
 
-  def dhFormula(simModel: SimState, customMod: Double = 0): (Double, Double) = {
-    (((simModel.statModel.modifierModel.dhMod * (simModel.statModel.secondaryAttributeModel.directHit - simModel.statModel.modifierModel.substatLevelMod)) / simModel.statModel.modifierModel.divisorLevelMod) / 10, 0)
+  def dhFormula(simState: SimState, customMod: Double = 0): (Double, Double) = {
+    (((simState.statModel.modifierModel.dhMod * (simState.statModel.secondaryAttributeModel.directHit - simState.statModel.modifierModel.substatLevelMod)) / simState.statModel.modifierModel.divisorLevelMod) / 10, 0)
   }
 
   mutMap.put(FormulaNames.Damage, damageFormula)

@@ -2,7 +2,6 @@ package BaseClasses
 
 
 import Core.SimState
-import Enums.GeneralFunctionNames.GeneralFunctionNames
 import models.RotationLogic.{ConditionLogic, StateCheck}
 import models._
 import timers.NextAttack
@@ -10,15 +9,26 @@ import timers.NextAttack
 import scala.collection.mutable.{Queue => MutQueue}
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
+/**
+ * Class containing the information for the specific character
+ * @param statModel
+ * @param jobName
+ * @param openerQueue
+ * @param attackMap
+ * @param buffModelMap
+ * @param rotationLogic
+ * @param characterKey a unique key related to the character of this job
+ */
 @JSExportTopLevel("JobInfo")
 class JobInfo(
                val statModel: StatModel,
                val jobName: String,
-               val time: Int,
                val openerQueue: MutQueue[OpenerModel],
                val attackMap: Map[String, SkillModel],
                val buffModelMap: Map[String, BuffModel],
-               val rotationLogic: StateCheck) {
+               val rotationLogic: StateCheck,
+               val characterKey: String
+             ) {
   @JSExport
   var simState: SimState = _
 
