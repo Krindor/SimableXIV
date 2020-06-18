@@ -49,11 +49,12 @@ class SimState(
     timeChange = 0
   }
 
-  def updateTime(time: Double): Unit = {
+  def updateTime(changeInTime: Double): Unit = {
     //buffMap.transform((_, v) => v.transform((_,v)  =>  updateTime(v, time)))
+    timeChange = changeInTime
     buffMap.values.foreach(firstMapValue => {
       for (buffs <- firstMapValue) {
-        buffs._2.timeChange(time)
+        buffs._2.timeChange(changeInTime)
         if (buffs._2.valueMap(BuffValueNames.Time) <= 0) {
           removeBuff(firstMapValue, buffs._1)
         }
@@ -61,7 +62,7 @@ class SimState(
 
     }
     )
-    timeChange += time
+    time += changeInTime
 
   }
 

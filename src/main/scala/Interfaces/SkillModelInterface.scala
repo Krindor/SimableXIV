@@ -1,12 +1,11 @@
 package Interfaces
 
 
-import io.circe.parser._
+
 import Blueprints.FunctionBlueprint
 import Core.SimState
 import Factories.DuplicateSmacker
-import io.circe.generic.semiauto._
-import io.circe._
+
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -25,20 +24,13 @@ trait SkillModelInterface {
   }
 
   //This method will be rewritten
-  def createSkillI(jsonString: String): Array[SkillModuleInterface] = {
-    //Get the file directory which contains the JSON files wanted
+  def createSkillI(funcArray: Array[FunctionBlueprint]): Array[SkillModuleInterface] = {
 
 
-    //Create a list with all the files in the directory
 
-
-    val decodeResult = decode[Array[FunctionBlueprint]](jsonString).toOption.get
-
-
-    //Create the SkillInterface from the JSON files
-    val skillModuleInterfaceArray = new ArrayBuffer[SkillModuleInterface](decodeResult.length)
+    val skillModuleInterfaceArray = new ArrayBuffer[SkillModuleInterface](funcArray.length)
     //Reflection to instantiate the first SkillModule of the SkillInterface
-    for (functionBlueprint <- decodeResult) {
+    for (functionBlueprint <- funcArray) {
       val skillInterface = DuplicateSmacker.getSkillClass(functionBlueprint.functionName)
       //Build the skill
       skillInterface.buildSkill(functionBlueprint)
@@ -47,7 +39,7 @@ trait SkillModelInterface {
     skillModuleInterfaceArray.toArray
   }
 
-  implicit val fooDecoder: Decoder[Array[FunctionBlueprint]] = deriveDecoder[Array[FunctionBlueprint]]
+
 
 
 }

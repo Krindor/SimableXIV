@@ -11,21 +11,18 @@ import scala.collection.mutable.{Queue => MutQueue}
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
 @JSExportTopLevel("JobInfo")
-class JobInfo(val statModel: StatModel, val jobName: String, val time: Int) {
+class JobInfo(
+               val statModel: StatModel,
+               val jobName: String,
+               val time: Int,
+               val openerQueue: MutQueue[OpenerModel],
+               val attackMap: Map[String, SkillModel],
+               val buffModelMap: Map[String, BuffModel],
+               val rotationLogic: StateCheck) {
   @JSExport
   var simState: SimState = _
 
-  def createSimState(
-                      openerQueue: MutQueue[OpenerModel],
-                      nextAttack: NextAttack,
-                      generalFunctionMap: Map[GeneralFunctionNames, SimState => Unit],
-                      formulaMap: Map[String, (SimState, Double) => (Double, Double)],
-                      statModel: StatModel,
-                      attackMap: Map[String, SkillModel],
-                      attackFunctionMap: Map[String, (SimState, MutQueue[String]) => Unit],
-                      buffModelMap: Map[String, BuffModel],
-                      rotationLogic: StateCheck
-                    ): Unit = {
+  def createSimState(nextAttack: NextAttack): Unit = {
     simState = new SimState(
       openerQueue,
       nextAttack,

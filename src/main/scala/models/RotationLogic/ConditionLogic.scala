@@ -4,7 +4,7 @@ import Core.SimState
 import Enums.{BuffMapTypes, BuffValueNames}
 
 
-class ConditionLogic(array: Array[String]) {
+case class ConditionLogic(array: Array[String]) {
   private val targetName = array(0)
   private val comparer = array(1).toCharArray
   private val comparingValue = array(2).toDouble

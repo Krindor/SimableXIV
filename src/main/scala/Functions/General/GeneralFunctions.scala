@@ -21,19 +21,19 @@ object GeneralFunctions {
   def getFunction(functionName: GeneralFunctionNames): SimState => Unit = hashMap(functionName)
 
   //Initiates an attack
-  def attackStart(simModel: SimState): Unit = {
-    simModel.nextAttack.addFunction(GeneralFunctions.getFunction(GeneralFunctionNames.End), GeneralFunctionNames.End, simModel.attackMap(simModel.actionName).castTime)
-    simModel.nextAttack.removeFunction(GeneralFunctionNames.Start)
-    simModel.eventLog += (simModel.time + ":Starts casting " + simModel.actionName)
+  def attackStart(simState: SimState): Unit = {
+    simState.nextAttack.addFunction(attackEnd, GeneralFunctionNames.End, simState.attackMap(simState.actionName).castTime)
+    simState.nextAttack.removeFunction(GeneralFunctionNames.Start)
+    simState.eventLog += (simState.time + ":Starts casting " + simState.actionName)
 
   }
 
   //When the cast/attack actually finishes
-  def attackEnd(simModel: SimState): Unit = {
-    simModel.nextAttack.addFunction(GeneralFunctions.getFunction(GeneralFunctionNames.ApplyAttack), GeneralFunctionNames.ApplyAttack, simModel.attackMap(simModel.actionName).applicationOffset)
-    simModel.snapShotBuffMap = simModel.buffMap
-    simModel.nextAttack.removeFunction(GeneralFunctionNames.End)
-    simModel.eventLog += (simModel.time + ":Finishes casting " + simModel.actionName)
+  def attackEnd(simState: SimState): Unit = {
+    simState.nextAttack.addFunction(applyAttack, GeneralFunctionNames.ApplyAttack, simState.attackMap(simState.actionName).applicationOffset)
+    simState.snapShotBuffMap = simState.buffMap
+    simState.nextAttack.removeFunction(GeneralFunctionNames.End)
+    simState.eventLog += (simState.time + ":Finishes casting " + simState.actionName)
 
   }
 
@@ -41,9 +41,9 @@ object GeneralFunctions {
     simState.buffMap(BuffMapTypes.DamageOverTime).values.foreach(value => value.run(simState))
   }
 
-  def actionPicker(simModel: SimState): Unit = {
+  def actionPicker(simState: SimState): Unit = {
     //runs the check and returns the name of the action, or none if it didn't find any that matches the current state
-    simModel.actionName = simModel.rotationLogic.check(simModel)._2
+    simState.actionName = simState.rotationLogic.check(simState)._2
 
   }
 

@@ -13,6 +13,6 @@ object DuplicateSmacker {
   }
 
   def getSkillClass(skillName: String): SkillModuleInterface = {
-    Class.forName(skillName).getDeclaredConstructor().newInstance().asInstanceOf[SkillModuleInterface]
+    Class.forName("SkillModules.General." + skillName).getDeclaredConstructor().newInstance().asInstanceOf[SkillModuleInterface]
   }
 }

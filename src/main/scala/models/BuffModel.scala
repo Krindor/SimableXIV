@@ -1,5 +1,6 @@
 package models
 
+import Blueprints.FunctionBlueprint
 import Core.SimState
 import Enums.BuffMapTypes.BuffMapTypes
 import Enums.BuffValueNames
@@ -14,10 +15,11 @@ class BuffModel(
                  val name: String,
                  val checkArray: ArrayBuffer[(SimState, mutable.Queue[String]) => Unit],
                  val queueForCheckArray: ArrayBuffer[mutable.Queue[String]],
-                 val damageOverTimePotency: Double = 0
+                 val damageOverTimePotency: Double = 0,
+                 val skillBlueprints: Array[FunctionBlueprint]
                ) extends SkillModelInterface {
 
-  val skillIArray: Array[SkillModuleInterface] = createSkillI(name)
+  val skillIArray: Array[SkillModuleInterface] = createSkillI(skillBlueprints)
   val valueMap: MutMap[BuffValueNames, Double] = new MutMap[BuffValueNames, Double]()
   var buffMap: MutMap[BuffMapTypes, MutMap[String, BuffModel]] = DuplicateSmacker.createBuffMap()
   var stringValue: String = _

@@ -1,43 +1,46 @@
 package Core
 
 import BaseClasses.JobInfo
+import Enums.{FormulaNames, GeneralFunctionNames}
 import timers.NextAttack
+import Functions.General.{GeneralFormulas, GeneralFunctions}
 
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
-/*
+/**
  * The core part of the library that handles the actual simulations.
  */
 @JSExportTopLevel("SimCore")
-class SimCore(val jobInfo: JobInfo) {
+class SimCore(val jobArray: Array[JobInfo]) {
+
+  private val formulaMap = GeneralFormulas.mutMap
+  private val generalFunctionMap = GeneralFunctions.hashMap
 
 
-  private val nextAttack: NextAttack = new NextAttack
-  private val simState: SimState = jobInfo.simState
-  private var currentTime: Double = 0
+  def initialize(): Unit ={
+    for (job <- jobArray) {
+      job.createSimState(new NextAttack)
+      FormulaNames.values.foreach(value => job.simState.FormulaResult.put(value, formulaMap(value)(job.simState, 0)._1))
+      job.simState.nextAttack.addFunction(generalFunctionMap(GeneralFunctionNames.Opener), GeneralFunctionNames.Opener)
+    }
+  }
 
-  //simModel.FormulaResult.put("Skill Speed", simModel.formulaMap("Skill Speed")(simModel, 0)._1)
-  //simModel.FormulaResult.put("Spell Speed", simModel.formulaMap("Spell Speed")(simModel, 0)._1)
-  //simModel.FormulaResult.put("Damage" ,simModel.formulaMap("Damage")(simModel, 0)._1)
-  //simModel.FormulaResult.put("Crit", simModel.formulaMap("Crit")(simModel, 0)._1)
-  //simModel.FormulaResult.put("Direct Hit", simModel.formulaMap("Direct Hit")(simModel, 0)._1)
-  //nextAttack.addFunction(simModel.generalFunctionMap("Opener") , "Test", 1)
+
 
   //Runs the sim
   @JSExport
-  def nextAction(damageLog: Array[String]): Array[String] = {
+  private def nextAction(simState: SimState, nextAttack: NextAttack, damageLog: Array[String]): Unit= {
 
 
     //get the next type of attack from the list and also time until next action
+    //TODO change the function from (SimState => Unit) to Array[JobInfo] to accommodate for parties
     val attackTuple: (SimState => Unit, Double) = nextAttack.getNextAttack
-    currentTime = currentTime + attackTuple._2
-    simState.timeChange = attackTuple._2
-    //simModel.generalFunctionMap("TimeChange")(simModel)
+    jobArray.foreach(job => job.simState.updateTime(attackTuple._2))
     attackTuple._1(simState)
     //Runs the target attack type and returns the values and states saved in the simModel variable
 
 
-    damageLog
+
   }
 
 
